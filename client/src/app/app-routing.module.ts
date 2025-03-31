@@ -5,12 +5,13 @@ import { ProductsComponent } from "./pages/products/products.component";
 import { CartComponent } from "./pages/cart/cart.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { CheckoutComponent } from "./pages/checkout/checkout.component";
+import { SalesStatsComponent } from "./pages/sales-stats/sales-stats.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "products", component: ProductsComponent },
   { path: "cart", component: CartComponent },
-  // { path: 'sales-stats', component: SalesStatsComponent },
+  { path: "sales-stats", component: SalesStatsComponent },
   // { path: 'generate-discount', component: GenerateDiscountComponent },
   { path: "checkout", component: CheckoutComponent },
 

@@ -1,0 +1,24 @@
+<div *ngIf="isLoading" class="loader-container">
+  <div class="loader"></div>
+</div>
+<div class="summary-container" *ngIf="!isLoading">
+  <h2>Sales Stats</h2>
+  <p><strong>Total Items Purchased:</strong> {{ totalItems }}</p>
+  <p><strong>Total Purchase Amount:</strong> Rs.{{ totalAmount }}</p>
+
+  <h3>Discount Details</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Discount Code</th>
+        <th>Discount Amount (Rs)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let discount of discountCodes">
+        <td>{{ discount.code }}</td>
+        <td>{{ discount.totalDiscountedAmount }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

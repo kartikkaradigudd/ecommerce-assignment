@@ -109,7 +109,8 @@ class CheckoutServiceImplTest {
     }
 
     @Test
-    void testPlaceOrderSuccess() {
+    void testPlaceOrderSuccessWithCoupon() {
+
         Order order = new Order("user1", new ArrayList<>(), 500, 50, "SAVE10");
 
         HashMap<String, Cart> cartMap = new HashMap<>();
@@ -120,6 +121,43 @@ class CheckoutServiceImplTest {
         user.setOrderCount(2);
         userMap.put("user1", user);
 
+        HashMap<String, CouponCode> couponMap = new HashMap<>();
+        CouponCode coupon = new CouponCode();
+        coupon.setTotalDiscountedAmount(100);
+        couponMap.put("SAVE10", coupon);
+
+        when(cartStorage.getCarts()).thenReturn(cartMap);
+        when(userStorage.getUsers()).thenReturn(userMap);
+        when(ordersStorage.getOrders()).thenReturn(new ArrayList<>());
+        when(couponCodesStorage.getAllCouponCodes()).thenReturn(couponMap);
+
+        StatusResponse response = checkoutService.placeOrder(order);
+
+        assertEquals(Constants.ResponseConstants.OK, response.getStatus());
+        assertEquals("Order Placed Successfully", response.getMessage());
+        assertEquals(3, userStorage.getUsers().get("user1").getOrderCount()); // Order count should increase
+        assertTrue(cartStorage.getCarts().get("user1").getProducts().isEmpty()); // Cart should be emptied
+        assertEquals(150, couponCodesStorage.getAllCouponCodes().get("SAVE10").getTotalDiscountedAmount()); // Discount should be updated
+
+        verify(ordersStorage, times(1)).getOrders();
+        verify(cartStorage, times(2)).getCarts();
+        verify(userStorage, times(3)).getUsers();
+        verify(couponCodesStorage, times(3)).getAllCouponCodes();
+    }
+
+    @Test
+    void testPlaceOrderSuccessWithoutCoupon() {
+
+        Order order = new Order("user2", new ArrayList<>(), 800, 100, null); // No coupon code
+
+        HashMap<String, Cart> cartMap = new HashMap<>();
+        cartMap.put("user2", new Cart());
+
+        HashMap<String, User> userMap = new HashMap<>();
+        User user = new User();
+        user.setOrderCount(1);
+        userMap.put("user2", user);
+
         when(cartStorage.getCarts()).thenReturn(cartMap);
         when(userStorage.getUsers()).thenReturn(userMap);
         when(ordersStorage.getOrders()).thenReturn(new ArrayList<>());
@@ -128,12 +166,13 @@ class CheckoutServiceImplTest {
 
         assertEquals(Constants.ResponseConstants.OK, response.getStatus());
         assertEquals("Order Placed Successfully", response.getMessage());
-        assertEquals(3, userStorage.getUsers().get("user1").getOrderCount()); // Order count should increase
-        assertTrue(cartStorage.getCarts().get("user1").getProducts().isEmpty()); // Cart should be emptied
+        assertEquals(2, userStorage.getUsers().get("user2").getOrderCount()); // Order count should increase
+        assertTrue(cartStorage.getCarts().get("user2").getProducts().isEmpty()); // Cart should be emptied
 
         verify(ordersStorage, times(1)).getOrders();
         verify(cartStorage, times(2)).getCarts();
         verify(userStorage, times(3)).getUsers();
+        verify(couponCodesStorage, never()).getAllCouponCodes(); // Coupon storage should not be accessed
     }
 
     @Test

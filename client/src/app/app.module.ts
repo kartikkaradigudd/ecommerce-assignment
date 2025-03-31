@@ -12,6 +12,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatCardModule } from "@angular/material";
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { SalesStatsComponent } from './pages/sales-stats/sales-stats.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
     CartComponent,
     LoginComponent,
     CheckoutComponent,
+    SalesStatsComponent,
   ],
   imports: [
     BrowserModule,

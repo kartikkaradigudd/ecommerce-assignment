@@ -69,6 +69,10 @@ public class CheckoutServiceImpl implements CheckoutService {
             cartStorage.getCarts().get(request.getUsername()).setProducts(new ArrayList<>());
             Integer currentOrderCount = userStorage.getUsers().get(request.getUsername()).getOrderCount();
             userStorage.getUsers().get(request.getUsername()).setOrderCount(currentOrderCount+1);
+            if(request.getCouponCode()!=null){
+              Integer discountedAmount = couponCodesStorage.getAllCouponCodes().get(request.getCouponCode()).getTotalDiscountedAmount();
+              couponCodesStorage.getAllCouponCodes().get(request.getCouponCode()).setTotalDiscountedAmount(discountedAmount+request.getTotalDiscount());
+            }
             response.setStatus(Constants.ResponseConstants.OK);
             response.setMessage("Order Placed Successfully");
         }catch (Exception e){

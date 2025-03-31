@@ -8,6 +8,9 @@ public class CouponCode {
 
     private Integer totalDiscountedAmount;
 
+    public CouponCode() {
+    }
+
     public CouponCode(String code, Date validTill, Integer totalDiscountedAmount) {
         this.code = code;
         this.validTill = validTill;
