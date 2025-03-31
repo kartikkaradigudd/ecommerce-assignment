@@ -3,6 +3,7 @@ import { CartApiService } from "./cart-api.service";
 import { AuthService } from "src/app/shared/auth.service";
 import { RemoveProductRequest } from "./cart-model";
 import { Product } from "../products/product-model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-cart",
@@ -17,7 +18,8 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartApiService: CartApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -62,5 +64,6 @@ export class CartComponent implements OnInit {
 
   proceedToCheckout() {
     console.log("Proceeding with the products===> ", this.products);
+    this.router.navigate(["/checkout"]);
   }
 }

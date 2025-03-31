@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h2>Order Summary</h2>
+
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="loader"></div>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <div *ngFor="let item of cartItems" class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.name }}</h5>
+        <p class="card-text">Price: Rs.{{ item.price }}</p>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h4>Subtotal: Rs.{{ totalPrice }}</h4>
+
+      <div *ngIf="couponApplied">
+        <h5 class="text-success">Discount (10%): - Rs.{{ discount }}</h5>
+        <p class="text-info">
+          ✅ Coupon "<strong>{{ discountCode }}</strong
+          >" Applied!
+        </p>
+      </div>
+
+      <h4>Total Payable: Rs.{{ discountedTotal }}</h4>
+    </div>
+
+    <button class="btn btn-success" (click)="proceedToPayment()">
+      Proceed to Payment
+    </button>
+  </div>
+</div>

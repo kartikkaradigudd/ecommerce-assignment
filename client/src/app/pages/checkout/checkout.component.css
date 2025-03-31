@@ -1,0 +1,27 @@
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.card {
+  padding: 10px;
+}
+
+.summary {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.summary h4,
+.summary h5 {
+  margin: 5px 0;
+}

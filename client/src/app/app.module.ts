@@ -11,6 +11,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatCardModule } from "@angular/material";
+import { CheckoutComponent } from './pages/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatCardModule } from "@angular/material";
     ProductsComponent,
     CartComponent,
     LoginComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
