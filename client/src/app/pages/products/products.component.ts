@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { ProductsApiService } from "./products-api.service";
+import { Product } from "./product-model";
+import { AuthService } from "src/app/shared/auth.service";
+import { AddToCartRequest } from "../cart/cart-model";
+import { CartApiService } from "../cart/cart-api.service";
 
 @Component({
   selector: "app-products",
@@ -7,25 +11,18 @@ import { ProductsApiService } from "./products-api.service";
   styleUrls: ["./products.component.css"],
 })
 export class ProductsComponent implements OnInit {
-  products = [];
-  // [
-  //   { name: "Laptop", price: 1000, imageUrl: "assets/images/laptop.jpeg" },
-  //   { name: "Phone", price: 500, imageUrl: "assets/images/phone.jpeg" },
-  //   { name: "T-Shirt", price: 20, imageUrl: "assets/images/t-shirt.jpeg" },
-  //   { name: "Jeans", price: 40, imageUrl: "assets/images/jeans.jpeg" },
-  //   { name: "Microwave", price: 150, imageUrl: "assets/images/microwave.jpeg" },
-  //   {
-  //     name: "Vacuum Cleaner",
-  //     price: 200,
-  //     imageUrl: "assets/images/vacuum-cleaner.jpeg",
-  //   },
-  // ];
-
+  products: Array<Product> = [];
+  username: string;
   isLoading: boolean = false;
 
-  constructor(private productsApiService: ProductsApiService) {}
+  constructor(
+    private productsApiService: ProductsApiService,
+    private authService: AuthService,
+    private cartApiService: CartApiService
+  ) {}
 
   ngOnInit() {
+    this.username = this.authService.getUsername();
     this.loadMetaData();
   }
 
@@ -39,5 +36,18 @@ export class ProductsComponent implements OnInit {
         alert(response.content.message);
       }
     });
+  }
+
+  addToCart(product: Product) {
+    const addToCartRequest: AddToCartRequest = {
+      username: this.username,
+      product: product,
+    };
+
+    this.cartApiService
+      .addProductToCart(addToCartRequest)
+      .subscribe((response) => {
+        alert(response.content.message);
+      });
   }
 }

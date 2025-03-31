@@ -4,11 +4,13 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private Integer orderCount;
 
-    public User(String username, String password, String role) {
+    public User(String username, String password, String role, Integer orderCount) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.orderCount = orderCount;
     }
 
     public String getUsername() {
@@ -33,5 +35,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
     }
 }

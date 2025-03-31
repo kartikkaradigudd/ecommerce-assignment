@@ -5,7 +5,7 @@ import com.ecommerce.model.User;
 import com.ecommerce.responses.auth.UserAuthResponse;
 import com.ecommerce.responses.common.StatusResponse;
 import com.ecommerce.services.auth.interfaces.AuthService;
-import com.ecommerce.storage.InMemoryUserStorage;
+import com.ecommerce.storage.UserStorage;
 import com.ecommerce.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    InMemoryUserStorage userStorage;
+    UserStorage userStorage;
 
     @Override
     public StatusResponse login(LoginRequest loginRequest) {

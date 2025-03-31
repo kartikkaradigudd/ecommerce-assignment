@@ -3,8 +3,7 @@ package com.ecommerce.services.auth;
 import com.ecommerce.model.LoginRequest;
 import com.ecommerce.model.User;
 import com.ecommerce.responses.auth.UserAuthResponse;
-import com.ecommerce.responses.common.StatusResponse;
-import com.ecommerce.storage.InMemoryUserStorage;
+import com.ecommerce.storage.UserStorage;
 import com.ecommerce.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 class AuthServiceImplTest {
     @Mock
-    private InMemoryUserStorage userStorage;
+    private UserStorage userStorage;
 
     @InjectMocks
     private AuthServiceImpl authService;
@@ -32,8 +31,8 @@ class AuthServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         mockUsers = new HashMap<>();
-        mockUsers.put("admin", new User("admin", "admin123", "ADMIN"));
-        mockUsers.put("user1", new User("user1", "user123", "USER"));
+        mockUsers.put("admin", new User("admin", "admin123", "ADMIN",4));
+        mockUsers.put("user1", new User("user1", "user123", "USER",6));
 
         when(userStorage.getUsers()).thenReturn(mockUsers);
     }

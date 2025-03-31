@@ -2,7 +2,7 @@ package com.ecommerce.services.products;
 
 import com.ecommerce.model.Product;
 import com.ecommerce.responses.products.ProductsMetaDataResponse;
-import com.ecommerce.storage.InMemoryProductStorage;
+import com.ecommerce.storage.ProductStorage;
 import com.ecommerce.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 class ProductsServiceImplTest {
     @Mock
-    private InMemoryProductStorage productStorage;
+    private ProductStorage productStorage;
 
     @InjectMocks
     private ProductsServiceImpl productsService;

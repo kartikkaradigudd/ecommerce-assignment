@@ -1,19 +1,14 @@
 package com.ecommerce.storage;
 
 import com.ecommerce.model.Product;
-import com.ecommerce.model.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
-public class InMemoryProductStorage {
-    //map<id,product>
-//    private final Map<Integer, Product> products = new HashMap<>();
+public class ProductStorage {
     private final List<Product> products=new ArrayList<>();
     @PostConstruct
     void init(){

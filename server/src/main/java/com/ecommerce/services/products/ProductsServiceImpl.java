@@ -2,7 +2,7 @@ package com.ecommerce.services.products;
 
 import com.ecommerce.responses.products.ProductsMetaDataResponse;
 import com.ecommerce.services.products.interfaces.ProductsService;
-import com.ecommerce.storage.InMemoryProductStorage;
+import com.ecommerce.storage.ProductStorage;
 import com.ecommerce.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ProductsServiceImpl implements ProductsService {
 
     @Autowired
-    InMemoryProductStorage productStorage;
+    ProductStorage productStorage;
 
     @Override
     public ProductsMetaDataResponse getAllProducts() {
