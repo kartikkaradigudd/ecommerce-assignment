@@ -51,7 +51,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void testFailedLogin_InvalidCredentials() {
+    void testFailedLoginWithInvalidCredentials() {
         LoginRequest request = new LoginRequest("admin", "wrongpassword");
 
         UserAuthResponse response = (UserAuthResponse) authService.login(request);
@@ -62,7 +62,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void testLogin_ExceptionHandling() {
+    void testLoginWithExceptionHandling() {
         when(userStorage.getUsers()).thenThrow(new RuntimeException("Database error"));
 
         LoginRequest request = new LoginRequest("admin", "admin123");

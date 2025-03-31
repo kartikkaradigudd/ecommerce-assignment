@@ -9,6 +9,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { LoginComponent } from "./pages/login/login.component";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatCardModule } from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,14 @@ import { HttpClientModule } from "@angular/common/http";
     CartComponent,
     LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
