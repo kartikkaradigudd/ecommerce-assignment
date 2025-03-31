@@ -1,10 +1,14 @@
 package com.ecommerce.services.checkout;
 
 import com.ecommerce.model.CouponCode;
+import com.ecommerce.model.Order;
 import com.ecommerce.model.User;
 import com.ecommerce.responses.checkout.ValidationResponse;
+import com.ecommerce.responses.common.StatusResponse;
 import com.ecommerce.services.checkout.interfaces.CheckoutService;
+import com.ecommerce.storage.CartStorage;
 import com.ecommerce.storage.CouponCodesStorage;
+import com.ecommerce.storage.OrdersStorage;
 import com.ecommerce.storage.UserStorage;
 import com.ecommerce.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,12 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Autowired
     CouponCodesStorage couponCodesStorage;
+
+    @Autowired
+    OrdersStorage ordersStorage;
+
+    @Autowired
+    CartStorage cartStorage;
 
     @Value("${nthOrder}")
     private Integer nthOrder;
@@ -47,6 +57,24 @@ public class CheckoutServiceImpl implements CheckoutService {
             e.printStackTrace();
             response.setStatus(Constants.ResponseConstants.FAILURE);
             response.setMessage("Failed to Validate order");
+        }
+        return response;
+    }
+
+    @Override
+    public StatusResponse placeOrder(Order request) {
+        StatusResponse response=new StatusResponse();
+        try {
+            ordersStorage.getOrders().add(request);
+            cartStorage.getCarts().get(request.getUsername()).setProducts(new ArrayList<>());
+            Integer currentOrderCount = userStorage.getUsers().get(request.getUsername()).getOrderCount();
+            userStorage.getUsers().get(request.getUsername()).setOrderCount(currentOrderCount+1);
+            response.setStatus(Constants.ResponseConstants.OK);
+            response.setMessage("Order Placed Successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(Constants.ResponseConstants.FAILURE);
+            response.setMessage("Unable to Place Order");
         }
         return response;
     }

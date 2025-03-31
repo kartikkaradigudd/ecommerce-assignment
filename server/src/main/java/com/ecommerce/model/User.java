@@ -6,6 +6,9 @@ public class User {
     private String role;
     private Integer orderCount;
 
+    public User() {
+    }
+
     public User(String username, String password, String role, Integer orderCount) {
         this.username = username;
         this.password = password;

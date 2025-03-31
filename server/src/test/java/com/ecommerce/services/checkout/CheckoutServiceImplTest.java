@@ -4,10 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
+import com.ecommerce.model.Cart;
 import com.ecommerce.model.CouponCode;
+import com.ecommerce.model.Order;
 import com.ecommerce.model.User;
 import com.ecommerce.responses.checkout.ValidationResponse;
+import com.ecommerce.responses.common.StatusResponse;
+import com.ecommerce.storage.CartStorage;
 import com.ecommerce.storage.CouponCodesStorage;
+import com.ecommerce.storage.OrdersStorage;
 import com.ecommerce.storage.UserStorage;
 import com.ecommerce.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +28,12 @@ class CheckoutServiceImplTest {
 
     @Mock
     private UserStorage userStorage;
+
+    @Mock
+    private OrdersStorage ordersStorage;
+
+    @Mock
+    private CartStorage cartStorage;
 
     @Mock
     private CouponCodesStorage couponCodesStorage;
@@ -42,9 +53,9 @@ class CheckoutServiceImplTest {
 
         mockUser = new User("user1", "user123","USER",2); // 2 orders, next is 3rd (valid for coupon)
 
-        // ✅ Mock Coupon Storage
+
         mockCoupons = new HashMap<>();
-        mockCoupons.put("OFF10-SAVE123", new CouponCode("OFF10-SAVE123", new Date(125, 3, 4))); // Valid coupon
+        mockCoupons.put("OFF10-SAVE123", new CouponCode("OFF10-SAVE123", new Date(125, 3, 4),500)); // Valid coupon
 
         Map<String, User> userMap = new HashMap<>();
         userMap.put("user1", mockUser);
@@ -95,5 +106,47 @@ class CheckoutServiceImplTest {
 
         assertEquals(Constants.ResponseConstants.FAILURE, response.getStatus());
         assertEquals("Failed to Validate order", response.getMessage());
+    }
+
+    @Test
+    void testPlaceOrderSuccess() {
+        Order order = new Order("user1", new ArrayList<>(), 500, 50, "SAVE10");
+
+        HashMap<String, Cart> cartMap = new HashMap<>();
+        cartMap.put("user1", new Cart());
+
+        HashMap<String, User> userMap = new HashMap<>();
+        User user = new User();
+        user.setOrderCount(2);
+        userMap.put("user1", user);
+
+        when(cartStorage.getCarts()).thenReturn(cartMap);
+        when(userStorage.getUsers()).thenReturn(userMap);
+        when(ordersStorage.getOrders()).thenReturn(new ArrayList<>());
+
+        StatusResponse response = checkoutService.placeOrder(order);
+
+        assertEquals(Constants.ResponseConstants.OK, response.getStatus());
+        assertEquals("Order Placed Successfully", response.getMessage());
+        assertEquals(3, userStorage.getUsers().get("user1").getOrderCount()); // Order count should increase
+        assertTrue(cartStorage.getCarts().get("user1").getProducts().isEmpty()); // Cart should be emptied
+
+        verify(ordersStorage, times(1)).getOrders();
+        verify(cartStorage, times(2)).getCarts();
+        verify(userStorage, times(3)).getUsers();
+    }
+
+    @Test
+    void testPlaceOrderFailure() {
+        Order order = new Order("user1", new ArrayList<>(), 500, 50, "SAVE10");
+
+        when(cartStorage.getCarts()).thenThrow(new RuntimeException("Database error"));
+
+        StatusResponse response = checkoutService.placeOrder(order);
+
+        assertEquals(Constants.ResponseConstants.FAILURE, response.getStatus());
+        assertEquals("Unable to Place Order", response.getMessage());
+
+        verify(cartStorage, times(1)).getCarts();
     }
 }

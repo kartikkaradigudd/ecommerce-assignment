@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { CartApiService } from "../cart/cart-api.service";
 import { AuthService } from "src/app/shared/auth.service";
 import { CheckoutApiService } from "./checkout-api.service";
+import { OrderRequest } from "./checkout-model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-checkout",
@@ -21,7 +23,8 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private cartService: CartApiService,
     private authService: AuthService,
-    private checkoutApiService: CheckoutApiService
+    private checkoutApiService: CheckoutApiService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -67,19 +70,21 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  // applyDiscountCode() {
-  //   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //   this.discountCode =
-  //     "OFF10-" +
-  //     Array.from(
-  //       { length: 6 },
-  //       () => characters[Math.floor(Math.random() * characters.length)]
-  //     ).join("");
-  //   this.couponApplied = true;
-  //   this.calculatePrices();
-  // }
+  proceedToBuy() {
+    alert("Proceeding to Buy...");
+    const orderRequest: OrderRequest = {
+      username: this.username,
+      productIds: this.cartItems.map((item) => item.id),
+      totalPaidAmount: this.discountedTotal,
+      totalDiscount: this.discount,
+      couponCode: this.discountCode,
+    };
 
-  proceedToPayment() {
-    alert("Proceeding to payment...");
+    this.checkoutApiService.placeOrder(orderRequest).subscribe((response) => {
+      if (response.status === "OK") {
+        alert(response.content.message);
+        this.router.navigate(["/cart"]);
+      }
+    });
   }
 }

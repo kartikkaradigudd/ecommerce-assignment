@@ -6,9 +6,12 @@ public class CouponCode {
     private String code;
     private Date validTill;
 
-    public CouponCode(String code, Date validTill) {
+    private Integer totalDiscountedAmount;
+
+    public CouponCode(String code, Date validTill, Integer totalDiscountedAmount) {
         this.code = code;
         this.validTill = validTill;
+        this.totalDiscountedAmount = totalDiscountedAmount;
     }
 
     public String getCode() {
@@ -25,5 +28,13 @@ public class CouponCode {
 
     public void setValidTill(Date validTill) {
         this.validTill = validTill;
+    }
+
+    public Integer getTotalDiscountedAmount() {
+        return totalDiscountedAmount;
+    }
+
+    public void setTotalDiscountedAmount(Integer totalDiscountedAmount) {
+        this.totalDiscountedAmount = totalDiscountedAmount;
     }
 }
