@@ -28,7 +28,7 @@ public class CheckoutController {
     }
 
     @RequestMapping( value = "/placeOrder", method = RequestMethod.POST )
-    public ResponseEntity<EcommerceResponse> validateOrder(@RequestBody Order request ) {
+    public ResponseEntity<EcommerceResponse> placeOrder(@RequestBody Order request ) {
         StatusResponse response = checkoutService.placeOrder( request );
         EcommerceResponse ecommerceResponse = responseWrapper.createResponse( response.getStatus(), response );
         return new ResponseEntity<EcommerceResponse>( ecommerceResponse, HttpStatus.OK );

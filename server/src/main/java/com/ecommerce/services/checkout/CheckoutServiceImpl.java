@@ -44,8 +44,8 @@ public class CheckoutServiceImpl implements CheckoutService {
             if(user!=null){
                 if((user.getOrderCount()+1)%nthOrder==0){
                     String code=getActiveAndRandomCouponCode();
-                    response.setValidForCoupon(code != null);
-                    response.setCouponCode(getActiveAndRandomCouponCode());
+                    response.setValidForCoupon(true);
+                    response.setCouponCode(code);
 
                 }else{
                     response.setValidForCoupon(false);
@@ -69,7 +69,7 @@ public class CheckoutServiceImpl implements CheckoutService {
             cartStorage.getCarts().get(request.getUsername()).setProducts(new ArrayList<>());
             Integer currentOrderCount = userStorage.getUsers().get(request.getUsername()).getOrderCount();
             userStorage.getUsers().get(request.getUsername()).setOrderCount(currentOrderCount+1);
-            if(request.getCouponCode()!=null){
+            if(request.getCouponCode()!=null && !request.getCouponCode().equals("")){
               Integer discountedAmount = couponCodesStorage.getAllCouponCodes().get(request.getCouponCode()).getTotalDiscountedAmount();
               couponCodesStorage.getAllCouponCodes().get(request.getCouponCode()).setTotalDiscountedAmount(discountedAmount+request.getTotalDiscount());
             }
@@ -98,11 +98,21 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         // If no active coupons found
         if (activeCoupons.isEmpty()) {
-            return null;
+            return generateNewCouponCode();
         }
 
         // Taking a random active coupon
         Random random = new Random();
         return activeCoupons.get(random.nextInt(activeCoupons.size())).getCode();
+    }
+
+    private String generateNewCouponCode() {
+        String[] PREFIXES = {"OFF10", "OFF20", "SAVE10", "SAVE20", "DEAL30"};
+        Random random = new Random();
+        String prefix = PREFIXES[random.nextInt(PREFIXES.length)];
+        String randomCode = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "").substring(0, 6).toUpperCase();
+        String finalCode=prefix + "-" + randomCode;
+        couponCodesStorage.getAllCouponCodes().put(finalCode,new CouponCode(finalCode,new Date(125,12,30),0));
+        return finalCode;
     }
 }

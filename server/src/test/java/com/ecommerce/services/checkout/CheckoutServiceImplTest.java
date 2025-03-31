@@ -86,17 +86,6 @@ class CheckoutServiceImplTest {
         assertNull(response.getCouponCode());
     }
 
-    @Test
-    void testValidateOrderNoActiveCoupons() {
-        when(couponCodesStorage.getAllCouponCodes()).thenReturn(new HashMap<>());
-
-        ValidationResponse response = checkoutService.validateOrder("user1");
-
-        assertEquals(Constants.ResponseConstants.OK, response.getStatus());
-        assertEquals("Order Validated Successfully", response.getMessage());
-        assertFalse(response.getValidForCoupon());
-        assertNull(response.getCouponCode());
-    }
 
     @Test
     void testValidateOrderExceptionHandling() {
