@@ -56,7 +56,7 @@ Navigate to the `client/` directory and start the frontend:
 ```sh
 cd client
 npm install
-ng serve
+npm start
 ```
 
 ## API Documentation
