@@ -10,7 +10,6 @@ This project implements a simple e-commerce backend with APIs for adding items t
 - Auto-generate discount codes for every nth order if existing codes are expired ( I've set validTill field for checking this )
 - Admin API for sales insights
 - User authentication with role-based access control (Admin/User)
-- 
 
 ## Tech Stack
 - **Backend:** Spring Boot (Java 1.8)
