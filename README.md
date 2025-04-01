@@ -63,6 +63,7 @@ ng serve
 
 ### 1. Add Items to Cart
 This API will add the product to User's Cart.
+
 **Endpoint:** `POST /cart/addProductToCart`
 - **Request Body:**
 ```json
