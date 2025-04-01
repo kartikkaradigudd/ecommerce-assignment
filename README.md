@@ -33,7 +33,7 @@ After cloning the repository, you will find two main directories:
 
 ### Clone the Repository
 ```sh
-git clone <repository_url>
+git clone https://github.com/kartikkaradigudd/ecommerce-assignment.git
 cd ecommerce-assignment
 git checkout develop
 ```
